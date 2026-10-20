@@ -100,11 +100,13 @@ class ControlMySpaPanelLockSwitch(ControlMySpaEntity, SwitchEntity):
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Lock the panel."""
         await self.coordinator.async_send_command(
-            self.coordinator.api.async_set_panel_lock(self.coordinator.spa_id, True)
+            self.coordinator.api.async_set_panel_lock(self.coordinator.spa_id, True),
+            expected_state={"panelLock": True},
         )
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Unlock the panel."""
         await self.coordinator.async_send_command(
-            self.coordinator.api.async_set_panel_lock(self.coordinator.spa_id, False)
+            self.coordinator.api.async_set_panel_lock(self.coordinator.spa_id, False),
+            expected_state={"panelLock": False},
         )

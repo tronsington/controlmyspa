@@ -290,11 +290,23 @@ class ControlMySpaApi:
         return spas if isinstance(spas, list) else []
 
     async def async_get_spa(self, spa_id: str) -> dict[str, Any]:
-        """Return one spa, including its currentState."""
+        """Return one spa's record (model, serial and so on).
+
+        Its embedded currentState is a stale snapshot; use
+        async_get_current_state for live values.
+        """
         payload = await self._request("GET", f"/spas/{spa_id}")
-        if not isinstance(payload, dict) or "currentState" not in payload:
-            raise ControlMySpaConnectionError("Spa response had no currentState")
+        if not isinstance(payload, dict) or "_id" not in payload:
+            raise ControlMySpaConnectionError("Unexpected spa response")
         return payload
+
+    async def async_get_current_state(self, spa_id: str) -> dict[str, Any]:
+        """Return the spa's live state, as the portal polls it."""
+        payload = await self._request("GET", f"/spas/{spa_id}/current-state")
+        data = payload.get("data") if isinstance(payload, dict) else None
+        if not isinstance(data, dict):
+            raise ControlMySpaConnectionError("Current state response had no data")
+        return data
 
     async def _command(self, path: str, spa_id: str, **fields: Any) -> None:
         """Send a spa command."""

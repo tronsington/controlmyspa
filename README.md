@@ -59,8 +59,8 @@ available so you can see that it is offline.
 
 ## Options
 
-**Update interval**: how often the spa's state is read (default 180 seconds,
-30 to 3600). After any command the state is re-read about 5 seconds later.
+**Update interval**: how often the spa's state is read (default 60 seconds,
+15 to 3600). After any command the state is re-read at 3, 10 and 25 seconds.
 
 ## Migrating from a `rest:` sensor setup
 

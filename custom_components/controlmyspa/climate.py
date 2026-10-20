@@ -121,11 +121,12 @@ class ControlMySpaClimate(ControlMySpaEntity, ClimateEntity):
                 )
             )
         low, high = self._limits_f()
-        fahrenheit = min(max(fahrenheit, low), high)
+        fahrenheit = int(min(max(fahrenheit, low), high))
         await self.coordinator.async_send_command(
             self.coordinator.api.async_set_temperature(
-                self.coordinator.spa_id, int(fahrenheit)
-            )
+                self.coordinator.spa_id, fahrenheit
+            ),
+            expected_state={"desiredTemp": f"{self._from_f(fahrenheit):.2f}"},
         )
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:

@@ -80,7 +80,16 @@ class FakeCloud:
         self.calls.append("spa")
         if not self._authorized(request):
             return web.json_response({}, status=401)
-        return web.json_response({"_id": SPA_ID, "currentState": {"currentTemp": "104.00"}})
+        # The real record embeds a stale snapshot of currentState
+        return web.json_response({"_id": SPA_ID, "currentState": {"desiredTemp": "STALE"}})
+
+    async def current_state(self, request: web.Request) -> web.Response:
+        self.calls.append("state")
+        if not self._authorized(request):
+            return web.json_response({}, status=401)
+        return web.json_response(
+            {"statusCode": 200, "data": {"currentTemp": "104.00", "desiredTemp": "100.00"}}
+        )
 
     async def command(self, request: web.Request) -> web.Response:
         if not self._authorized(request):
@@ -94,6 +103,7 @@ class FakeCloud:
         app.router.add_get("/web/auth/refresh", self.refresh_handler)
         app.router.add_get("/web/spas", self.spas)
         app.router.add_get("/web/spas/{spa_id}", self.spa)
+        app.router.add_get("/web/spas/{spa_id}/current-state", self.current_state)
         app.router.add_post("/web/spa-commands/{path:.*}", self.command)
         return app
 
@@ -120,11 +130,17 @@ async def test_first_request_logs_in(cloud):
     assert cloud.calls == ["login", "spas"]
 
 
+async def test_current_state_returns_live_data(cloud):
+    state = await cloud.client.async_get_current_state(SPA_ID)
+    assert state == {"currentTemp": "104.00", "desiredTemp": "100.00"}
+    assert cloud.calls == ["login", "state"]
+
+
 async def test_401_triggers_refresh_not_login(cloud):
     await cloud.client.async_get_spa(SPA_ID)
     cloud.access = make_jwt(86400)  # server-side revoke of the old access token
     data = await cloud.client.async_get_spa(SPA_ID)
-    assert data["currentState"]["currentTemp"] == "104.00"
+    assert data["_id"] == SPA_ID
     assert cloud.calls == ["login", "spa", "spa", "refresh", "spa"]
 
 

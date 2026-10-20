@@ -13,13 +13,13 @@ CONF_SPA_ID: Final = "spa_id"
 CONF_POLL_INTERVAL: Final = "poll_interval"
 
 # Default values
-DEFAULT_POLL_INTERVAL: Final = 180
-MIN_POLL_INTERVAL: Final = 30
+DEFAULT_POLL_INTERVAL: Final = 60
+MIN_POLL_INTERVAL: Final = 15
 MAX_POLL_INTERVAL: Final = 3600
 
-# Seconds to wait after a command before re-reading state, so the spa has
-# time to report the change back to the cloud
-COMMAND_REFRESH_DELAY: Final = 5
+# Seconds after a command at which state is re-read. The spa reports the
+# change back to the cloud a few seconds after it acts on it.
+COMMAND_REFRESH_DELAYS: Final = (3, 10, 25)
 
 MANUFACTURER: Final = "Balboa Water Group"
 

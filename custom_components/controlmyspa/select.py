@@ -82,7 +82,8 @@ class ControlMySpaHeaterModeSelect(ControlMySpaEntity, SelectEntity):
         await self.coordinator.async_send_command(
             self.coordinator.api.async_set_heater_mode(
                 self.coordinator.spa_id, option.upper()
-            )
+            ),
+            expected_state={"heaterMode": option.upper()},
         )
 
 
@@ -107,7 +108,8 @@ class ControlMySpaTempRangeSelect(ControlMySpaEntity, SelectEntity):
         await self.coordinator.async_send_command(
             self.coordinator.api.async_set_temperature_range(
                 self.coordinator.spa_id, option.upper()
-            )
+            ),
+            expected_state={"tempRange": option.upper()},
         )
 
 

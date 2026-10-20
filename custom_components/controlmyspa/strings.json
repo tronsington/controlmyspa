@@ -52,7 +52,7 @@
           "poll_interval": "Update interval (seconds)"
         },
         "data_description": {
-          "poll_interval": "How often to read the spa's state from the cloud (30 to 3600)."
+          "poll_interval": "How often to read the spa's state from the cloud (15 to 3600)."
         }
       }
     }
