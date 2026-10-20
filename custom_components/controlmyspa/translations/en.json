@@ -1,0 +1,123 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sign in to ControlMySpa",
+        "description": "Use the same email and password you use at controlmyspa.com. Your spa is found automatically.",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      },
+      "spa": {
+        "title": "Choose a spa",
+        "description": "This account has more than one spa. Pick the one to add.",
+        "data": {
+          "spa_id": "Spa"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sign in again",
+        "description": "ControlMySpa rejected the saved login for {email}. Enter the current password.",
+        "data": {
+          "password": "Password"
+        }
+      },
+      "reconfigure": {
+        "title": "Update ControlMySpa login",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach ControlMySpa. Try again in a minute.",
+      "invalid_auth": "Email or password was rejected. If it works at controlmyspa.com, sign in there once to accept any new terms, then try again.",
+      "no_spas": "No spas are linked to this account.",
+      "spa_not_found": "This account no longer has access to the configured spa.",
+      "unknown": "Unexpected error. Check the Home Assistant logs."
+    },
+    "abort": {
+      "already_configured": "This spa is already set up.",
+      "reauth_successful": "Signed in again successfully.",
+      "reconfigure_successful": "Login updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ControlMySpa options",
+        "data": {
+          "poll_interval": "Update interval (seconds)"
+        },
+        "data_description": {
+          "poll_interval": "How often to read the spa's state from the cloud (30 to 3600)."
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "online": { "name": "Online" },
+      "ethernet": { "name": "Ethernet connected" },
+      "rs485": { "name": "RS485 active" },
+      "ozone": { "name": "Ozone" },
+      "filter": { "name": "Filter {number}" }
+    },
+    "climate": {
+      "thermostat": { "name": "Thermostat" }
+    },
+    "light": {
+      "light": { "name": "Light {number}" }
+    },
+    "select": {
+      "heater_mode": {
+        "name": "Heater mode",
+        "state": {
+          "ready": "Ready",
+          "rest": "Rest",
+          "ready_rest": "Ready-in-Rest"
+        }
+      },
+      "temperature_range": {
+        "name": "Temperature range",
+        "state": {
+          "high": "High",
+          "low": "Low"
+        }
+      },
+      "pump": {
+        "name": "Pump {number}",
+        "state": {
+          "off": "Off",
+          "low": "Low",
+          "med": "Medium",
+          "high": "High",
+          "on": "On"
+        }
+      },
+      "blower": {
+        "name": "Blower {number}",
+        "state": {
+          "off": "Off",
+          "low": "Low",
+          "med": "Medium",
+          "high": "High",
+          "on": "On"
+        }
+      }
+    },
+    "sensor": {
+      "current_temperature": { "name": "Water temperature" },
+      "set_point": { "name": "Set point" },
+      "run_mode": { "name": "Run mode" },
+      "controller_version": { "name": "Controller version" }
+    },
+    "switch": {
+      "pump": { "name": "Pump {number}" },
+      "blower": { "name": "Blower {number}" },
+      "panel_lock": { "name": "Panel lock" }
+    }
+  }
+}
